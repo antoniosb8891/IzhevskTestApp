@@ -23,6 +23,9 @@ namespace TestApp.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            Xamarin.FormsGoogleMaps.Init("AIzaSyCWZrs2gjq4Zwz0vzn6nmawvbB63vqww9c");
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

@@ -24,7 +24,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>TestApp</string>
 	<key>CFBundleIdentifier</key>
-	<string>ru.bedovanton.testapp</string>
+	<string>ru.bedovanton.finder2</string>
 	<key>CFBundleVersion</key>
 	<string>1.0.0</string>
 	<key>UILaunchStoryboardName</key>
@@ -37,5 +37,32 @@
 	<string>1.0.0</string>
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>map.aviasales.ru</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
+		<key>NSAllowsArbitraryLoads </key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInMedia</key>
+		<true/>
+	</dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Разрешите использовать геопозиционирование для отображения аэропортов на карте.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Разрешите использовать геопозиционирование для отображения аэропортов на карте.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Разрешите использовать геопозиционирование для отображения аэропортов на карте.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Разрешение на доступ к данным calendar</string>
 </dict>
 </plist>

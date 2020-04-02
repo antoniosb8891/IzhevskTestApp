@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
+             xmlns:local="clr-namespace:TestApp"
+             mc:Ignorable="d"
+             x:Class="TestApp.Pages.MainPage" >
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Найти" Order="Primary" Priority="1" Command="{Binding FindIATACommand}" />
+    </ContentPage.ToolbarItems>
+    <NavigationPage.TitleView>
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Entry VerticalOptions="Center" HorizontalOptions="FillAndExpand" 
+                   Placeholder="IATA-код места отправления" Text="{Binding IATASource, Mode=TwoWay}" ReturnCommand="{Binding FindIATACommand}" >
+                <Entry.TextColor>
+                    <OnPlatform x:TypeArguments="Color" >
+                        <On Platform="Android">White</On>
+                        <On Platform="iOS">Black</On>
+                    </OnPlatform>
+                </Entry.TextColor>
+                <Entry.PlaceholderColor>
+                    <OnPlatform x:TypeArguments="Color" >
+                        <On Platform="Android">White</On>
+                        <On Platform="iOS">Gray</On>
+                    </OnPlatform>
+                </Entry.PlaceholderColor>
+            </Entry>
+        </Grid>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <Grid Padding="10, 10, 10, 10" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*" />
+                <RowDefinition Height="60*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <maps:Map x:Name="AirsMap" Grid.Row="0" Grid.Column="0" 
+                      MyLocationEnabled="False"
+                      HasRotationEnabled="True"
+                      HasScrollEnabled="True"
+                      HasZoomEnabled="True"
+                      MapType="Street"
+                      ItemsSource="{Binding IATADirectMapPinsList}"
+                      PinClicked="AirsMap_PinClicked"
+                      VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+                <maps:Map.ItemTemplate>
+                    <DataTemplate>
+                        <maps:Pin Position="{Binding Pin.Position}"
+                              Address="{Binding Pin.Address}"
+                              Label="{Binding Pin.Label}"
+                              Tag="{Binding Pin.Tag}"/>
+                    </DataTemplate>
+                </maps:Map.ItemTemplate>
+            </maps:Map>
+            
+            <StackLayout Grid.Row="1" Grid.Column="0">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+                    <SearchBar Text="{Binding FilterText, Mode=TwoWay}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Placeholder="IATA или название аэропорта" />
+                    <ActivityIndicator Color="Black" IsRunning="{Binding FilterProcessing}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" WidthRequest="20" />
+                </StackLayout>
+                <ListView 
+                            HasUnevenRows="True"
+                            IsPullToRefreshEnabled="True" 
+                            IsRefreshing="{Binding IATAListRefreshing}"
+                            ItemsSource="{Binding IATADirectItemsList}"
+                            RefreshCommand="{Binding FindIATACommand}"
+                            ItemSelected="IATAListView_ItemSelected" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Padding="5, 5, 5, 5" VerticalOptions="Center">
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+                                        <Label Text="{Binding IATA, StringFormat='IATA: {0}' }" VerticalOptions="Center" />
+                                        <Label Text="{Binding Name, StringFormat='Город: {0}' }" VerticalOptions="Center" />
+                                    </StackLayout>
+                                    <Label Text="{Binding CountryName, StringFormat='Страна: {0}' }" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
