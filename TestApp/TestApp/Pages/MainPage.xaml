@@ -52,8 +52,7 @@
                     <DataTemplate>
                         <maps:Pin Position="{Binding Pin.Position}"
                               Address="{Binding Pin.Address}"
-                              Label="{Binding Pin.Label}"
-                              Tag="{Binding Pin.Tag}"/>
+                              Label="{Binding Pin.Label}"/>
                     </DataTemplate>
                 </maps:Map.ItemTemplate>
             </maps:Map>

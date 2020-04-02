@@ -21,5 +21,11 @@ namespace TestApp.Domain
             var o = await _webAccess.GetSupportedDirections(iataSource);
             return new SupportedDirectionsViewModel(o);
         }
+        
+        public async Task<AirPricesViewModel> GetAirPrices(string iataSource)
+        {
+            var o = await _webAccess.GetAirPrices(iataSource);
+            return new AirPricesViewModel(o);
+        }
     }
 }

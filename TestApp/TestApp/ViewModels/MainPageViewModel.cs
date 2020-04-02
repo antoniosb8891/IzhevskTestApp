@@ -16,6 +16,7 @@ namespace TestApp.ViewModels
     public class MainPageViewModel : INotifyPropertyChanged
     {
         private string _iataSource = "";
+        private SupportedDirectionsResponse.Origin _srcAirPort = null;
         private List<IATADirectItemModel> _iATADirectItems = new List<IATADirectItemModel>();
         private List<IATADirectItemModel> _iATADirectItemsList = null, _iATADirectMapPinsList = null;
         private bool _iATAListRefreshing = false;
@@ -92,6 +93,8 @@ namespace TestApp.ViewModels
             }
         }
 
+        public SupportedDirectionsResponse.Origin SrcAirPort => _srcAirPort;
+
         public ICommand FindIATACommand
         {
             get
@@ -108,24 +111,15 @@ namespace TestApp.ViewModels
                     IATAListRefreshing = true;
                     IataLoading = true;
                     var o = await App.WebAccess.GetSupportedDirections(IATASource);
+                    IATAListRefreshing = false;
+                    IataLoading = false;
                     if (o.IsLoadOk)
                     {
-                        await Task.Factory.StartNew(() =>
-                         {
-                             _iATADirectItems.Clear();
-                             foreach (var it in o.Directions)
-                                 _iATADirectItems.Add(new IATADirectItemModel(it));
-                             IATAListRefreshing = false;
-                             IataLoading = false;
-                         }).ContinueWith((t) =>
-                         {
-                             FilterApply();
-                         }, TaskScheduler.FromCurrentSynchronizationContext());
-                    }
-                    else
-                    {
-                        IATAListRefreshing = false;
-                        IataLoading = false;
+                        _srcAirPort = o.Origin;
+                        _iATADirectItems.Clear();
+                        foreach (var it in o.Directions)
+                            _iATADirectItems.Add(new IATADirectItemModel(it));
+                        FilterApply();
                     }
                 });
             }
@@ -181,10 +175,9 @@ namespace TestApp.ViewModels
             if (IsVaildCoord)
             {
                 _pin = new Pin();
-                _pin.Label = String.Format("{0} | {1}", IATA, Name);
+                _pin.Label = IATA;
                 _pin.Position = new Position(Lat, Lng);
                 _pin.Address = CountryName;
-                _pin.Tag = this;
             }
             else
                 _pin = null;

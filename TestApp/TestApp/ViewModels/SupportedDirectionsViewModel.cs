@@ -26,6 +26,7 @@ namespace TestApp.ViewModels
         }
 
         public SupportedDirectionsResponse.Direction[] Directions => _supportedDirectionsResponse.directions != null ? _supportedDirectionsResponse.directions : new SupportedDirectionsResponse.Direction[0];
+        public SupportedDirectionsResponse.Origin Origin => _supportedDirectionsResponse.origin;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

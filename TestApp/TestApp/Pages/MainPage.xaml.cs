@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TestApp.Helpers;
+using TestApp.Models;
 using TestApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
@@ -52,34 +53,14 @@ namespace TestApp.Pages
                 return;
 
             var ctrl = e.SelectedItem as IATADirectItemModel;
-            await DisplayAlert("", ctrl.IATA, "Ok");
+            await Navigation.PushAsync(new AirPortCostsPage(_context.SrcAirPort, ctrl));
 
             ListView lst = (ListView)sender;
             lst.SelectedItem = null;
         }
 
-        // обновление меток на карте
         private async void MapUpdate()
         {
-            //AirsMap.Pins.Clear();
-            /*foreach (var p in _context.IATADirectItemsList)
-            {
-                if (!p.IsVaildCoord)
-                    continue;
-                var pin = new Pin()
-                {
-                    Label = String.Format("{0} | {1}", p.IATA, p.Name),
-                    Position = new Position(p.Lat, p.Lng),
-                    Address = p.CountryName,
-                    Tag = p
-                };
-                AirsMap.Pins.Add(pin);
-            }*/
-
-            //var pinList = _context.IATADirectItemsList.Where(x => x.Pin != null).ToList();
-            //AirsMap.ItemsSource = pinList;
-            //AirsMap.Pins = pinList;
-
             if (AirsMap.Pins.Count > 0)
                 await AirsMap.MoveCamera(CameraUpdateFactory.NewCameraPosition(
                     new CameraPosition(
@@ -92,7 +73,9 @@ namespace TestApp.Pages
 
         private async void AirsMap_PinClicked(object sender, PinClickedEventArgs e)
         {
-            //var ctrl = e.Pin.Tag as IATADirectItemModel;
+            var ctrl = _context.IATADirectMapPinsList.Where(x => x.IATA.Equals(e.Pin.Label)).FirstOrDefault();
+            if (ctrl != null)
+                await Navigation.PushAsync(new AirPortCostsPage(_context.SrcAirPort, ctrl));
         }
     }
 }

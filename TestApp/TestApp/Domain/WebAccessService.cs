@@ -46,6 +46,22 @@ namespace TestApp.Domain
             }
         }
 
+        public async Task<AirPriceResponse[]> GetAirPrices(string iataSource)
+        {
+            var uri = new Uri(String.Format("/prices.json?origin_iata={0}&period=2020-05-05:season&direct=true&one_way=true&price=50000&no_visa=true&schengen=true&need_visa=false&locale=ru", iataSource));
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+            string answer = await SendRequest(httpRequestMessage);
+            try
+            {
+                return JsonConvert.DeserializeObject<AirPriceResponse[]>(answer, MyExtensions.JsonSettings);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("JSON Exception:\n" + ex);
+                return null;
+            }
+        }
+
         private async Task<string> SendRequest(HttpRequestMessage request)
         {
             if (!MyExtensions.IsHasInternet())

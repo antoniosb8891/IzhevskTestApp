@@ -24,7 +24,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>TestApp</string>
 	<key>CFBundleIdentifier</key>
-	<string>ru.bedovanton.finder2</string>
+	<string>ru.bedovanton.testapp2</string>
 	<key>CFBundleVersion</key>
 	<string>1.0.0</string>
 	<key>UILaunchStoryboardName</key>
