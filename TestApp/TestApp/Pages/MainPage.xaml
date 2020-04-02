@@ -57,12 +57,10 @@
                     </DataTemplate>
                 </maps:Map.ItemTemplate>
             </maps:Map>
-            
+            <ActivityIndicator Grid.Row="0" Grid.Column="0" Color="Black" IsRunning="{Binding FilterProcessing}" HorizontalOptions="Center" VerticalOptions="Center" />
+
             <StackLayout Grid.Row="1" Grid.Column="0">
-                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
-                    <SearchBar Text="{Binding FilterText, Mode=TwoWay}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Placeholder="IATA или название аэропорта" />
-                    <ActivityIndicator Color="Black" IsRunning="{Binding FilterProcessing}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" WidthRequest="20" />
-                </StackLayout>
+                <SearchBar Text="{Binding FilterText, Mode=TwoWay}" HorizontalOptions="FillAndExpand" Placeholder="IATA или название аэропорта" />
                 <ListView 
                             HasUnevenRows="True"
                             IsPullToRefreshEnabled="True" 

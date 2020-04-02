@@ -108,15 +108,25 @@ namespace TestApp.ViewModels
                     IATAListRefreshing = true;
                     IataLoading = true;
                     var o = await App.WebAccess.GetSupportedDirections(IATASource);
-                    IATAListRefreshing = false;
                     if (o.IsLoadOk)
                     {
-                        _iATADirectItems.Clear();
-                        foreach (var it in o.Directions)
-                            _iATADirectItems.Add(new IATADirectItemModel(it));
-                        FilterApply();
+                        await Task.Factory.StartNew(() =>
+                         {
+                             _iATADirectItems.Clear();
+                             foreach (var it in o.Directions)
+                                 _iATADirectItems.Add(new IATADirectItemModel(it));
+                             IATAListRefreshing = false;
+                             IataLoading = false;
+                         }).ContinueWith((t) =>
+                         {
+                             FilterApply();
+                         }, TaskScheduler.FromCurrentSynchronizationContext());
                     }
-                    IataLoading = false;
+                    else
+                    {
+                        IATAListRefreshing = false;
+                        IataLoading = false;
+                    }
                 });
             }
         }
